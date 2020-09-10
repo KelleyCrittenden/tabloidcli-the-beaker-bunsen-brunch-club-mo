@@ -107,6 +107,10 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        public Author ChooseAuthor(string prompt = null)
+        {
+            return Choose(prompt);
+        }
         private void Add()
         {
             Console.WriteLine("New Author");
