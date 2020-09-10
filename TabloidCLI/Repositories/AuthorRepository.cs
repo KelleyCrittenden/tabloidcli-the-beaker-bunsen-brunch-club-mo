@@ -24,11 +24,12 @@ namespace TabloidCLI
                                           FROM Author";
 
                     List<Author> authors = new List<Author>();
+                    Author author = null;
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        Author author = new Author()
+                        author = new Author()
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),

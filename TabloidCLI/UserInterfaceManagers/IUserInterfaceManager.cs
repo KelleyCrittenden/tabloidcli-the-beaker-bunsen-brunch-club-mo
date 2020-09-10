@@ -3,5 +3,6 @@
     public interface IUserInterfaceManager
     {
         IUserInterfaceManager Execute();
+
     }
 }
