@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
@@ -110,15 +111,41 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.WriteLine("New Author");
             Author author = new Author();
-
+            FirstName: 
             Console.Write("First Name: ");
             author.FirstName = Console.ReadLine();
+            if (author.FirstName == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a name.");
+                Console.WriteLine();
 
+                goto FirstName;
+            }
+
+            LastName:
             Console.Write("Last Name: ");
             author.LastName = Console.ReadLine();
 
+            if (author.LastName == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a name.");
+                Console.WriteLine();
+                goto LastName;
+            }
+            Bio:
             Console.Write("Bio: ");
             author.Bio = Console.ReadLine();
+
+            if (author.Bio == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a bio.");
+                Console.WriteLine();
+
+                goto Bio;
+            }
             Console.WriteLine();
             _authorRepository.Insert(author);
         }
@@ -160,7 +187,10 @@ namespace TabloidCLI.UserInterfaceManagers
             if (authorToDelete != null)
             {
                 _authorRepository.Delete(authorToDelete.Id);
+                Console.WriteLine("Author has been removed.");
             }
+            
+            Console.WriteLine();
         }
     }
 }
