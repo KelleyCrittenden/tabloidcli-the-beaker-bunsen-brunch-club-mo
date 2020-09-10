@@ -65,7 +65,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             List<Author> authors = _authorRepository.GetAll();
             Console.WriteLine();
-            Console.WriteLine("Authors:");
+            Console.WriteLine("Your Authors:");
             Console.WriteLine("-----------------------------");
             foreach (Author author in authors)
             {
