@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
@@ -64,10 +65,15 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Author> authors = _authorRepository.GetAll();
+            Console.WriteLine();
+            Console.WriteLine("Your Authors:");
+            Console.WriteLine("-----------------------------");
             foreach (Author author in authors)
             {
                 Console.WriteLine(author);
             }
+            Console.WriteLine();
+
         }
 
         private Author Choose(string prompt = null)
@@ -101,20 +107,50 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        public Author ChooseAuthor(string prompt = null)
+        {
+            return Choose(prompt);
+        }
         private void Add()
         {
             Console.WriteLine("New Author");
             Author author = new Author();
-
+            FirstName: 
             Console.Write("First Name: ");
             author.FirstName = Console.ReadLine();
+            if (author.FirstName == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a name.");
+                Console.WriteLine();
 
+                goto FirstName;
+            }
+
+            LastName:
             Console.Write("Last Name: ");
             author.LastName = Console.ReadLine();
 
+            if (author.LastName == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a name.");
+                Console.WriteLine();
+                goto LastName;
+            }
+            Bio:
             Console.Write("Bio: ");
             author.Bio = Console.ReadLine();
 
+            if (author.Bio == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a bio.");
+                Console.WriteLine();
+
+                goto Bio;
+            }
+            Console.WriteLine();
             _authorRepository.Insert(author);
         }
 
@@ -127,19 +163,19 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
             Console.WriteLine();
-            Console.Write("New first name (blank to leave unchanged: ");
+            Console.Write("New first name (blank to leave unchanged): ");
             string firstName = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(firstName))
             {
                 authorToEdit.FirstName = firstName;
             }
-            Console.Write("New last name (blank to leave unchanged: ");
+            Console.Write("New last name (blank to leave unchanged): ");
             string lastName = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(lastName))
             {
                 authorToEdit.LastName = lastName;
             }
-            Console.Write("New bio (blank to leave unchanged: ");
+            Console.Write("New bio (blank to leave unchanged): ");
             string bio = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(bio))
             {
@@ -155,7 +191,10 @@ namespace TabloidCLI.UserInterfaceManagers
             if (authorToDelete != null)
             {
                 _authorRepository.Delete(authorToDelete.Id);
+                Console.WriteLine("Author has been removed.");
             }
+            
+            Console.WriteLine();
         }
     }
 }
