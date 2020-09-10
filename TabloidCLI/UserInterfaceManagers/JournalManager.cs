@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using TabloidCLI.Models;
+using TabloidCLI.Repositories;
+
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -37,10 +39,10 @@ namespace TabloidCLI.UserInterfaceManagers
                     Add();
                     return this;
                 case "3":
-                    Edit();
+                    Update();
                     return this;
-                case "4":
-                    Remove();
+               case "4":
+                    Delete();
                     return this;
                 case "0":
                     return _parentUI;
@@ -57,7 +59,7 @@ namespace TabloidCLI.UserInterfaceManagers
             foreach (Journal journal in journals)
             {
                 Console.WriteLine($"{journal.Title}:  {journal.CreateDateTime}");
-                Console.WriteLine($"{journal.Content}")
+                Console.WriteLine($"{journal.Content}");
                 Console.WriteLine("-------------");
             }
         }
@@ -74,12 +76,46 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Content: ");
             journal.Content = Console.ReadLine();
 
-            CreateDateTime = DateTime.Now.AddDays(-1)
+            journal.CreateDateTime = DateTime.Now.AddDays(-1);
 
             _journalRepository.Insert(journal);
         }
 
-        private void Edit()
+
+        // Method to Choose a Single Entry To Modify/Remove
+        private Journal Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a Journal Entry:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Journal> journals = _journalRepository.GetAll();
+
+            for (int i = 0; i < journals.Count; i++)
+            {
+                Journal journal = journals[i];
+                Console.WriteLine($" {i + 1}) {journal.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return journals[choice - 1];
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
+
+        //Editing A Single Journal Entry
+        private void Update()
         {
             Journal journalToEdit = Choose("Which Journal Entry would you like to edit?");
             if (journalToEdit == null)
@@ -89,25 +125,34 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.WriteLine();
             Console.Write("New Entry Title (blank to leave unchanged): ");
-            string firstName = Console.ReadLine();
+            string Title = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(Title))
             {
                 journalToEdit.Title = Title;
             }
-            Console.Write("New Content (blank to leave unchanged: ");
-            string lastName = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(lastName))
+            Console.Write("New Content (blank to leave unchanged): ");
+            string Content = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(Content))
             {
-                authorToEdit.LastName = lastName;
-            }
-            Console.Write("New bio (blank to leave unchanged: ");
-            string bio = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(bio))
-            {
-                authorToEdit.Bio = bio;
+                journalToEdit.Content = Content;
             }
 
-            _authorRepository.Update(authorToEdit);
+
+            _journalRepository.Update(journalToEdit);
+        }
+
+        //Deleting A Single Journal Entry
+
+        private void Delete()
+        {
+            Journal journalToDelete = Choose("Which Journal Entry would you like to remove?");
+            if (journalToDelete != null)
+            {
+                _journalRepository.Delete(journalToDelete.Id);
+                Console.WriteLine("This Journal Entry has been removed.");
+            }
+
+            Console.WriteLine();
         }
     }
 }
