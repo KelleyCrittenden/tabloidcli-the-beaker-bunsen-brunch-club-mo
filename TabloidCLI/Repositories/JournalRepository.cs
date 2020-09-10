@@ -1,3 +1,6 @@
+//Created By Kelley Crittenden
+//This file contains all of SQL Journal Queries
+
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
@@ -92,6 +95,7 @@ namespace TabloidCLI.Repositories
             }
         }
 
+        //Deleting a Single Journal Entry by Id selected by User
         public void Delete(int id)
         {
             using (SqlConnection conn = Connection)

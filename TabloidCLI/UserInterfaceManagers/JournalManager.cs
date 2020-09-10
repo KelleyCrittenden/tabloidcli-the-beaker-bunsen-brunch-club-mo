@@ -1,3 +1,6 @@
+//Created By Kelley Crittenden
+//This file manages all of the methods querying the SQL database
+
 using System;
 using System.Collections.Generic;
 using TabloidCLI.Models;
