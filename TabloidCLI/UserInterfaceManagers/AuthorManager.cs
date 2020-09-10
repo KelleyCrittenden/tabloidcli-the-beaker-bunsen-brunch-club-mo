@@ -119,7 +119,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("Bio: ");
             author.Bio = Console.ReadLine();
-
+            Console.WriteLine();
             _authorRepository.Insert(author);
         }
 
