@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography;
 using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
@@ -54,6 +55,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.Clear();
                     return this;
+
                 case "0":
                     return _parentUI;
                 default:
