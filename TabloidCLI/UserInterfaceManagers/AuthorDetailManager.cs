@@ -100,7 +100,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 Tag tag = tags[choice - 1];
                 _authorRepository.InsertTag(author, tag);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Invalid Selection. Won't add any tags.");
             }
@@ -127,7 +127,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 Tag tag = tags[choice - 1];
                 _authorRepository.DeleteTag(author.Id, tag.Id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Invalid Selection. Won't remove any tags.");
             }
