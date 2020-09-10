@@ -75,7 +75,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine();
 
         }
-
+        
         private Author Choose(string prompt = null)
         {
             if (prompt == null)
