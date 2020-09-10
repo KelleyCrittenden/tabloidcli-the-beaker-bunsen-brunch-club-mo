@@ -188,12 +188,13 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Post (Title, URL, BlogId, AuthorId)
-                                            VALUES(@title, @url)";
+                    cmd.CommandText = @"INSERT INTO Post (Title, URL, PublishDateTime, BlogId, AuthorId)
+                                            VALUES(@title, @url, @publishDateTime, @blogId, @authorId)";
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url",post.Url);
-                    cmd.Parameters.AddWithValue("@author",post.Author.Id);
-                    cmd.Parameters.AddWithValue("@blog",post.Blog.Id);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@blogId",post.Blog.Id);
+                    cmd.Parameters.AddWithValue("@authorId",post.Author.Id);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -202,12 +203,44 @@ namespace TabloidCLI.Repositories
 
         public void Update(Post post)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Post 
+                                           SET Title = @title, 
+                                                Url = @url, 
+                                                PublishDateTime = @publishDateTime, 
+                                                BlogId = @blogId, 
+                                                AuthorId = @authorId
+                                         WHERE id = @id";
+
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@url", post.Url);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@blogId", post.Blog.Id);
+                    cmd.Parameters.AddWithValue("@authorId", post.Author.Id);
+                    cmd.Parameters.AddWithValue("@id", post.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM POST WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

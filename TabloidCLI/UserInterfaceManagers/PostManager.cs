@@ -10,7 +10,6 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private readonly IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
-        private AuthorRepository _authorRepository;
         private string _connectionString;
 
         public PostManager(IUserInterfaceManager parentUI,string connectionString)
@@ -117,23 +116,67 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Published: ");
             post.PublishDateTime = Convert.ToDateTime(Console.ReadLine());
 
-            AuthorManager x = new AuthorManager(this, _connectionString);
-            //post.Author = x.ChooseAuthor();
-
+            AuthorManager authorManager= new AuthorManager(this, _connectionString);
+            post.Author = authorManager.ChooseAuthor();
+            post.Blog = new Blog()
+            {
+                Id = 1,
+                Title = "New",
+                Url = "google.com"
+            };
+            //BlogManager blogManager = new BlogManager(this, _connectionString);
+            //post.Blog = blogManager.ChooseAuthor();
             
-            
-
-
             _postRepository.Insert(post);
         }
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            Post postToEdit = Choose("Which post would you like to edit?");
+            if (postToEdit == null) return;
+
+            Console.WriteLine();
+            Console.Write("New title for the post (blank to leave unchanged): ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                postToEdit.Title = title;
+            }
+            Console.Write("New URL for the post (blank to leave unchanged): ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                postToEdit.Url = url;
+            }
+                Console.Write("It's empty");
+            Console.Write("New publishing date for the post (blank to leave unchanged): ");
+            string datePublished = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(datePublished))
+            {
+                postToEdit.PublishDateTime = Convert.ToDateTime(datePublished); ;
+            }
+                Console.Write("It's empty");
+
+            AuthorManager authorManager = new AuthorManager(this, _connectionString);
+            postToEdit.Author = authorManager.ChooseAuthor();
+
+            //BlogManager blogManager = new BlogManager(this, _connectionString);
+            //postToEdit.Blog = blogManager.ChooseAuthor();
+
+            _postRepository.Update(postToEdit);
+
         }
         private void Remove()
         {
-            throw new NotImplementedException();
+            Post postToDelete = Choose("Which post would you like to delete?");
+                if (postToDelete != null)
+            {
+                _postRepository.Delete(postToDelete.Id);
+                Console.WriteLine("Post has been removed.");
+
+            }
+            Console.WriteLine();
         }
     }
 }
