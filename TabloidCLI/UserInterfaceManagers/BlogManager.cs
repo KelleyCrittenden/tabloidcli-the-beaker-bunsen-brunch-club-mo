@@ -7,12 +7,15 @@ using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
+    // BlogManager class inherits from IUserInterfaceManager base class
     public class BlogManager : IUserInterfaceManager
     {
+        // Declaring private variables
         private readonly IUserInterfaceManager _parentUI;
         private BlogRepository _blogRepository;
         private string _connectionString;
 
+        // Constructor takes in parentUI and connectionString as parameters and instantiates private variables
         public BlogManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
@@ -20,6 +23,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _connectionString = connectionString;
         }
 
+        // Execute() method inherited from base class displays blog management menu options
         public IUserInterfaceManager Execute()
         {
             Console.WriteLine("Blog Menu");
@@ -56,6 +60,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        // Method invokes the GetAll() method from BlogRepository class and displays list of blogs (title and url)
         private void List()
         {
             List<Blog> blogs = _blogRepository.GetAll();
@@ -65,6 +70,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        // Method displays list of blogs for user to choose and returns selected blog, accepts optional prompt parameter or displays default
         private Blog Choose(string prompt = null)
         {
             if (prompt == null)
@@ -97,6 +103,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        // Method creates a new blog object using user's input and invokes Insert() method in BlogRepository class to insert new blog to database
         private void Add()
         {
             Console.WriteLine("New Blog");
