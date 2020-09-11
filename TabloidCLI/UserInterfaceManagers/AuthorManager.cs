@@ -78,6 +78,7 @@ namespace TabloidCLI.UserInterfaceManagers
         
         private Author Choose(string prompt = null)
         {
+            ChooseAuthor:
             if (prompt == null)
             {
                 prompt = "Please choose an Author:";
@@ -103,7 +104,7 @@ namespace TabloidCLI.UserInterfaceManagers
             catch (Exception)
             {
                 Console.WriteLine("Invalid Selection");
-                return null;
+                goto ChooseAuthor;
             }
         }
 
