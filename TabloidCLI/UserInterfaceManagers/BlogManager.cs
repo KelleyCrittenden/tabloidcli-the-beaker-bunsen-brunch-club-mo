@@ -43,7 +43,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     Add();
                     return this;
                 case "4":
-                    /*Edit();*/
+                    Edit();
                     return this;
                 case "5":
                     Remove();
@@ -109,6 +109,31 @@ namespace TabloidCLI.UserInterfaceManagers
             blog.Url = Console.ReadLine();
 
             _blogRepository.Insert(blog);
+        }
+
+        private void Edit()
+        {
+            Blog blogToEdit = Choose("Which blog would you like to edit?");
+            if (blogToEdit == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+            Console.Write("New blog title (blank to leave unchanged): ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                blogToEdit.Title = title;
+            }
+            Console.Write("New blog url (blank to leave unchanged): ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                blogToEdit.Url = url;
+            }
+
+            _blogRepository.Update(blogToEdit);
         }
 
         private void Remove()

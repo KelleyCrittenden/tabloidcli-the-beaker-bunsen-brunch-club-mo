@@ -72,9 +72,25 @@ namespace TabloidCLI.Repositories
             }
         }
 
+        // Method to update existing blog in database
         public void Update(Blog blog)
         {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
 
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Blog
+                                           SET Title = @Title,
+                                               URL = @URL
+                                         WHERE Id = @Id";
+                    cmd.Parameters.AddWithValue("@Title", blog.Title);
+                    cmd.Parameters.AddWithValue("@URL", blog.Url);
+                    cmd.Parameters.AddWithValue("@Id", blog.Id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         // Method to delete specific blog from database
