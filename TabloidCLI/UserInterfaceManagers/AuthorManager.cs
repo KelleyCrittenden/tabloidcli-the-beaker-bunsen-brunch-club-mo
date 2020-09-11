@@ -103,7 +103,9 @@ namespace TabloidCLI.UserInterfaceManagers
             }
             catch (Exception)
             {
+                Console.WriteLine();
                 Console.WriteLine("Invalid Selection");
+                Console.WriteLine();
                 goto ChooseAuthor;
             }
         }
@@ -119,10 +121,17 @@ namespace TabloidCLI.UserInterfaceManagers
             FirstName: 
             Console.Write("First Name: ");
             author.FirstName = Console.ReadLine();
-            if (author.FirstName == "")
+            if (string.IsNullOrEmpty(author.FirstName))
             {
                 Console.WriteLine();
                 Console.WriteLine("Please Enter a name.");
+                Console.WriteLine();
+
+                goto FirstName;
+            } else if (author.FirstName.Length > 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("First name must be 55 characters or less.");
                 Console.WriteLine();
 
                 goto FirstName;
@@ -132,11 +141,18 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Last Name: ");
             author.LastName = Console.ReadLine();
 
-            if (author.LastName == "")
+            if (string.IsNullOrEmpty(author.LastName))
             {
                 Console.WriteLine();
                 Console.WriteLine("Please Enter a name.");
                 Console.WriteLine();
+                goto LastName;
+            } else if (author.LastName.Length > 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Last name must be 55 characters or less.");
+                Console.WriteLine();
+
                 goto LastName;
             }
             Bio:
@@ -162,17 +178,34 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 return;
             }
-
+            firstNameEdit:
             Console.WriteLine();
             Console.Write("New first name (blank to leave unchanged): ");
             string firstName = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(firstName))
+            if (firstName.Length > 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("First name must be 55 characters or less.");
+                Console.WriteLine();
+
+                goto firstNameEdit;
+            }
+            else if (!string.IsNullOrWhiteSpace(firstName))
             {
                 authorToEdit.FirstName = firstName;
-            }
+            } 
+            lastNameEdit:
             Console.Write("New last name (blank to leave unchanged): ");
             string lastName = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(lastName))
+
+            if (lastName.Length > 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Last name must be 55 characters or less.");
+                Console.WriteLine();
+
+                goto lastNameEdit;
+            } else if (!string.IsNullOrWhiteSpace(lastName))
             {
                 authorToEdit.LastName = lastName;
             }
