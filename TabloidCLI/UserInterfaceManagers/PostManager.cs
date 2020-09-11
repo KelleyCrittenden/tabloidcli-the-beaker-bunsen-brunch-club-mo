@@ -188,17 +188,32 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Post postToEdit = Choose("Which post would you like to edit?");
             if (postToEdit == null) return;
-
+            
             Console.WriteLine();
+            EditTitle:
             Console.Write("New title for the post (blank to leave unchanged): ");
             string title = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(title))
+            if (title.Length > 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Title was too long. Please Enter a title:");
+                goto EditTitle;
+            }
+            else if (!string.IsNullOrWhiteSpace(title))
             {
                 postToEdit.Title = title;
             }
+
             Console.Write("New URL for the post (blank to leave unchanged): ");
+            EditUrl:
             string url = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(url))
+            if (url.Length > 2000)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Url was too long. Please Enter a url:");
+                goto EditUrl;
+            }
+            else if (!string.IsNullOrWhiteSpace(url))
             {
                 postToEdit.Url = url;
             }
