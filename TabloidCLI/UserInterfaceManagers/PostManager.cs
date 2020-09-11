@@ -122,6 +122,13 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine("Please Enter a title:");
                 goto Title;
             }
+
+            else if (title.Length> 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Title was too long. Please Enter a title:");
+                goto Title;
+            }
                 post.Title = title;
             
             Console.Write("URL: ");
@@ -132,6 +139,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
                 Console.WriteLine();
                 Console.WriteLine("Please Enter a url:");
+                goto Url;
+            }
+            else if (url.Length >2000)
+            {
+
+                Console.WriteLine();
+                Console.WriteLine("Url was too long. Please Enter a url:");
                 goto Url;
             }
             post.Url = url;
