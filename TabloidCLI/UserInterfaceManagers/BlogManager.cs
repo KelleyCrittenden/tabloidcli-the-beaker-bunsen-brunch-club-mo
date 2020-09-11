@@ -109,8 +109,8 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.WriteLine("New Blog");
             Blog blog = new Blog();
-            int titleMaxChar = 5;
-            int urlMaxChar = 5;
+            int titleMaxChar = 55;
+            int urlMaxChar = 2000;
 
             BlogTitle:
             Console.Write("Blog Title: ");
@@ -147,8 +147,8 @@ namespace TabloidCLI.UserInterfaceManagers
         private void Edit()
         {
             Blog blogToEdit = Choose("Which blog would you like to edit?");
-            int titleMaxChar = 5;
-            int urlMaxChar = 5;
+            int titleMaxChar = 55;
+            int urlMaxChar = 2000;
 
             if (blogToEdit == null)
             {
@@ -196,7 +196,7 @@ namespace TabloidCLI.UserInterfaceManagers
         }
 
         // Public Choose() method for Post component
-        public Blog ChoosePost(string prompt = null)
+        public Blog ChooseBlog(string prompt = null)
         {
             return Choose(prompt);
         }
