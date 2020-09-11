@@ -46,7 +46,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     /*Edit();*/
                     return this;
                 case "5":
-                    /*Remove();*/
+                    Remove();
                     return this;
                 case "0":
                     return _parentUI;
@@ -56,7 +56,7 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        public void List()
+        private void List()
         {
             List<Blog> blogs = _blogRepository.GetAll();
             foreach (Blog blog in blogs)
@@ -65,7 +65,39 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-        public void Add()
+        private Blog Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a blog:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Blog> blogs = _blogRepository.GetAll();
+
+            for (int i = 0; i < blogs.Count; i++)
+            {
+                Blog blog = blogs[i];
+                Console.WriteLine($" {i + 1}) {blog.Title} {blog.Url}");
+            }
+
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return blogs[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
+
+        private void Add()
         {
             Console.WriteLine("New Blog");
             Blog blog = new Blog();
@@ -77,6 +109,15 @@ namespace TabloidCLI.UserInterfaceManagers
             blog.Url = Console.ReadLine();
 
             _blogRepository.Insert(blog);
+        }
+
+        private void Remove()
+        {
+            Blog blogToDelete = Choose("Which blog would you like to remove?");
+            if (blogToDelete != null)
+            {
+                _blogRepository.Delete(blogToDelete.Id);
+            }
         }
     }
 }
