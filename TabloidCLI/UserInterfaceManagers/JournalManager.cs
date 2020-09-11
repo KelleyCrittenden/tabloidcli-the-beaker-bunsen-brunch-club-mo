@@ -104,7 +104,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 goto Content;
             }
 
-            journal.CreateDateTime = DateTime.Now.AddDays(-1);
+            journal.CreateDateTime = DateTime.Now;
 
             _journalRepository.Insert(journal);
         }
