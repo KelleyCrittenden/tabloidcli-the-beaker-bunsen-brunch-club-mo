@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
 
@@ -10,14 +8,15 @@ namespace TabloidCLI.UserInterfaceManagers
     public class TagManager : IUserInterfaceManager
     {
         private readonly IUserInterfaceManager _parentUI;
-        private string _connectionString;
         private TagRepository _tagRepository;
+        private string _connectionString;
+
 
         public TagManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
-            _connectionString = connectionString;
             _tagRepository = new TagRepository(connectionString);
+            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -89,7 +88,15 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            throw new NotImplementedException();
+           List<Tag> tags = _tagRepository.GetAll();
+            Console.WriteLine();
+            Console.WriteLine("Your Tags");
+            Console.WriteLine("-------------------------");
+            foreach (Tag tag in tags)
+            {
+                Console.WriteLine($"tag.Name");
+                Console.WriteLine("-------------");
+            }
         }
 
         private void Add()
