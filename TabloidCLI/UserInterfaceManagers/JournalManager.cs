@@ -73,6 +73,8 @@ namespace TabloidCLI.UserInterfaceManagers
         }
 
         //Adding New Journal Entry
+
+        
         private void Add()
         {
             Console.WriteLine("New Journal Entry");
@@ -90,8 +92,24 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine();
                 goto Title;
             }
+            //Catch for user entering a title that exceeds the varchar limit set inside the database
+            else if (journal.Title.Length > 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("The title you entered is too long. Please try something shorter.");
+                Console.WriteLine();
+                goto Title;
+            }
 
-            Content:
+            if (journal.Title == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please enter a title for this journal entry.");
+                Console.WriteLine();
+                goto Title;
+            }
+
+        Content:
             Console.Write("Content: ");
             journal.Content = Console.ReadLine();
 
@@ -146,18 +164,30 @@ namespace TabloidCLI.UserInterfaceManagers
         private void Update()
         {
             Journal journalToEdit = Choose("Which Journal Entry would you like to edit?");
+            
             if (journalToEdit == null)
             {
                 return;
             }
-
+            
+            TitleEdit:
             Console.WriteLine();
             Console.Write("New Entry Title (blank to leave unchanged): ");
             string Title = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(Title))
+
+            //Catch for user entering a title that exceeds the varchar limit set inside the database
+            if (Title.Length > 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("The title you entered is too long. Please try something shorter.");
+                Console.WriteLine();
+                goto TitleEdit;
+             }
+            else if (!string.IsNullOrWhiteSpace(Title))
             {
                 journalToEdit.Title = Title;
             }
+
             Console.Write("New Content (blank to leave unchanged): ");
             string Content = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(Content))
