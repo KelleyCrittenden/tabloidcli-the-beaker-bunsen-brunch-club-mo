@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
 
@@ -77,11 +78,31 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("New Journal Entry");
             Journal journal = new Journal();
 
+            Title:
             Console.Write("Title: ");
             journal.Title = Console.ReadLine();
 
+            //Preventing Empty User Input For Title
+            if (journal.Title == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please enter a title for this journal entry.");
+                Console.WriteLine();
+                goto Title;
+            }
+
+            Content:
             Console.Write("Content: ");
             journal.Content = Console.ReadLine();
+
+            //Preventing Empty User Input For Content
+            if (journal.Content == "")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please add content to this journal entry.");
+                Console.WriteLine();
+                goto Content;
+            }
 
             journal.CreateDateTime = DateTime.Now.AddDays(-1);
 
