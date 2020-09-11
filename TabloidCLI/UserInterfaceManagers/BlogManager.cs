@@ -109,22 +109,34 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.WriteLine("New Blog");
             Blog blog = new Blog();
+            int titleMaxChar = 5;
+            int urlMaxChar = 5;
 
             BlogTitle:
             Console.Write("Blog Title: ");
             blog.Title = Console.ReadLine();
-            if(blog.Title == "")
+            if (blog.Title == "")
             {
                 Console.WriteLine("Please enter a blog title");
+                goto BlogTitle;
+            }
+            else if (blog.Title.Length > titleMaxChar)
+            {
+                Console.WriteLine($"Title is too long, please limit to {titleMaxChar} characters");
                 goto BlogTitle;
             }
 
             BlogURL:
             Console.Write("Blog URL: ");
             blog.Url = Console.ReadLine();
-            if(blog.Url == "")
+            if (blog.Url == "")
             {
                 Console.WriteLine("Please enter a blog url");
+                goto BlogURL;
+            }
+            else if (blog.Url.Length > urlMaxChar)
+            {
+                Console.WriteLine($"URL is too long, please limit to {urlMaxChar} characters");
                 goto BlogURL;
             }
 
@@ -135,22 +147,38 @@ namespace TabloidCLI.UserInterfaceManagers
         private void Edit()
         {
             Blog blogToEdit = Choose("Which blog would you like to edit?");
+            int titleMaxChar = 5;
+            int urlMaxChar = 5;
+
             if (blogToEdit == null)
             {
                 return;
             }
 
             Console.WriteLine();
+            EditTitle:
             Console.Write("New blog title (blank to leave unchanged): ");
             string title = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(title))
             {
+                if (title.Length > titleMaxChar)
+                {
+                    Console.WriteLine($"Title is too long, please limit to {titleMaxChar} characters");
+                    goto EditTitle;
+                }
                 blogToEdit.Title = title;
             }
+
+            EditURL:
             Console.Write("New blog url (blank to leave unchanged): ");
             string url = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(url))
             {
+                if (url.Length > urlMaxChar)
+                {
+                    Console.WriteLine($"URL is too long, please limit to {urlMaxChar} characters");
+                    goto EditURL;
+                }
                 blogToEdit.Url = url;
             }
 
