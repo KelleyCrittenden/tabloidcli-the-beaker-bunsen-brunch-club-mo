@@ -73,6 +73,7 @@ namespace TabloidCLI.UserInterfaceManagers
         // Method displays list of blogs for user to choose and returns selected blog, accepts optional prompt parameter or displays default
         private Blog Choose(string prompt = null)
         {
+            ChooseBlog:
             if (prompt == null)
             {
                 prompt = "Please choose a blog:";
@@ -96,10 +97,10 @@ namespace TabloidCLI.UserInterfaceManagers
                 int choice = int.Parse(input);
                 return blogs[choice - 1];
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Invalid Selection");
-                return null;
+                goto ChooseBlog;
             }
         }
 
@@ -109,15 +110,28 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("New Blog");
             Blog blog = new Blog();
 
+            BlogTitle:
             Console.Write("Blog Title: ");
             blog.Title = Console.ReadLine();
+            if(blog.Title == "")
+            {
+                Console.WriteLine("Please enter a blog title");
+                goto BlogTitle;
+            }
 
+            BlogURL:
             Console.Write("Blog URL: ");
             blog.Url = Console.ReadLine();
+            if(blog.Url == "")
+            {
+                Console.WriteLine("Please enter a blog url");
+                goto BlogURL;
+            }
 
             _blogRepository.Insert(blog);
         }
 
+        // Method provides user list of blogs to edit, checks to see if input field is empty (meaning leave field unchanged) then invokes the Update() method in BlogRepository class 
         private void Edit()
         {
             Blog blogToEdit = Choose("Which blog would you like to edit?");
@@ -143,6 +157,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _blogRepository.Update(blogToEdit);
         }
 
+        // Method displays list of blogs for removal, invokes Delete() method in BlogRepository class
         private void Remove()
         {
             Blog blogToDelete = Choose("Which blog would you like to remove?");
@@ -150,6 +165,12 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 _blogRepository.Delete(blogToDelete.Id);
             }
+        }
+
+        // Public Choose() method for Post component
+        public Blog ChoosePost(string prompt = null)
+        {
+            return Choose(prompt);
         }
     }
 }
