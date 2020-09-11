@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Creates methods for communicating with the Post table including GetAll(), Get(id), GetByAuthor(author),
+//Insert(post), Update(post), and Delete(id)
+//Erik Lindstrom
+
+using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
@@ -17,7 +21,7 @@ namespace TabloidCLI.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT p.Id, p.Title, p.URL, p.AuthorId, p.BlogId, 
+                        SELECT p.Id, p.Title, p.URL, p.PublishDateTime, p.AuthorId, p.BlogId, 
                             a.FirstName, a.LastName, a.Bio, 
                             b.Title, b.URL as BlogURL
                         FROM Post p
@@ -48,6 +52,7 @@ namespace TabloidCLI.Repositories
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Title = reader.GetString(reader.GetOrdinal("Title")),
+                            PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
                             Url = reader.GetString(reader.GetOrdinal("URL")),
                             Blog = blog,
                             Author = author
@@ -218,7 +223,7 @@ namespace TabloidCLI.Repositories
 
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@url", post.Url);
-                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime.ToString("dd / MM / yyyy"));
                     cmd.Parameters.AddWithValue("@blogId", post.Blog.Id);
                     cmd.Parameters.AddWithValue("@authorId", post.Author.Id);
                     cmd.Parameters.AddWithValue("@id", post.Id);
