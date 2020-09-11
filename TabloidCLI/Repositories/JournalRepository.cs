@@ -114,6 +114,7 @@ namespace TabloidCLI.Repositories
             }
         }
 
+        //Currently Not In Use
         public Journal Get(int id)
         {
             throw new NotImplementedException();

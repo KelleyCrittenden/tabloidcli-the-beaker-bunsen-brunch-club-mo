@@ -1,3 +1,6 @@
+//Created by Kelley Crittenden
+//This file holds a template for making a Journal Entry
+
 using System;
 using System.Collections.Generic;
 using System.Text;
