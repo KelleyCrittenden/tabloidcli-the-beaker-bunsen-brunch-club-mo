@@ -1,5 +1,9 @@
-﻿using System;
+﻿//Handles command-line inputs and displays options for modifying posts
+//Erik Lindstrom
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
@@ -68,9 +72,9 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetAll();
             foreach (Post post in posts)
             {
-                Console.WriteLine(post.Title);
-                //Need more console logging?
+                Console.WriteLine($"{ post.Title} by {post.Author.FirstName} {post.Author.LastName} at {post.Url} on {post.PublishDateTime.ToString()}");
             }
+            Console.WriteLine("");
         }
 
         private Post Choose(string prompt = null)
@@ -110,11 +114,61 @@ namespace TabloidCLI.UserInterfaceManagers
             Post post = new Post();
 
             Console.Write("Title: ");
-            post.Title = Console.ReadLine();
+            Title:
+            string title = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a title:");
+                goto Title;
+            }
+
+            else if (title.Length> 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Title was too long. Please Enter a title:");
+                goto Title;
+            }
+                post.Title = title;
+            
             Console.Write("URL: ");
-            post.Url = Console.ReadLine();
-            Console.Write("Published: ");
-            post.PublishDateTime = Convert.ToDateTime(Console.ReadLine());
+            Url:
+            string url = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(url))
+            {
+
+                Console.WriteLine();
+                Console.WriteLine("Please Enter a url:");
+                goto Url;
+            }
+            else if (url.Length >2000)
+            {
+
+                Console.WriteLine();
+                Console.WriteLine("Url was too long. Please Enter a url:");
+                goto Url;
+            }
+            post.Url = url;
+
+            bool badDate = true;
+            while(badDate)
+            {
+                try
+                {
+                    Console.Write("Date published: ");
+                    post.PublishDateTime = Convert.ToDateTime(Console.ReadLine());
+                    badDate = false;
+
+                }
+                catch (Exception)
+                {
+
+                    Console.WriteLine("Date not accepted, please try again");
+                }
+            }
+
+            
+            
 
             AuthorManager authorManager= new AuthorManager(this, _connectionString);
             post.Author = authorManager.ChooseAuthor();
@@ -134,21 +188,36 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Post postToEdit = Choose("Which post would you like to edit?");
             if (postToEdit == null) return;
-
+            
             Console.WriteLine();
+            EditTitle:
             Console.Write("New title for the post (blank to leave unchanged): ");
             string title = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(title))
+            if (title.Length > 55)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Title was too long. Please Enter a title:");
+                goto EditTitle;
+            }
+            else if (!string.IsNullOrWhiteSpace(title))
             {
                 postToEdit.Title = title;
             }
+
             Console.Write("New URL for the post (blank to leave unchanged): ");
+            EditUrl:
             string url = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(url))
+            if (url.Length > 2000)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Url was too long. Please Enter a url:");
+                goto EditUrl;
+            }
+            else if (!string.IsNullOrWhiteSpace(url))
             {
                 postToEdit.Url = url;
             }
-                Console.Write("It's empty");
+
             Console.Write("New publishing date for the post (blank to leave unchanged): ");
             string datePublished = Console.ReadLine();
 
@@ -156,7 +225,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 postToEdit.PublishDateTime = Convert.ToDateTime(datePublished); ;
             }
-                Console.Write("It's empty");
+      
 
             AuthorManager authorManager = new AuthorManager(this, _connectionString);
             postToEdit.Author = authorManager.ChooseAuthor();

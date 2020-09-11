@@ -78,8 +78,6 @@ namespace TabloidCLI.UserInterfaceManagers
         
         private Author Choose(string prompt = null)
         {
-
-            // label in case exception is thrown
             ChooseAuthor:
             if (prompt == null)
             {
