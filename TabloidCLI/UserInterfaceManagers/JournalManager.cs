@@ -57,8 +57,12 @@ namespace TabloidCLI.UserInterfaceManagers
 
         //List Displaying All Journal Entries
         private void List()
+
         {
             List<Journal> journals = _journalRepository.GetAll();
+            Console.WriteLine();
+            Console.WriteLine("Your Journal Entries:");
+            Console.WriteLine("-----------------------------");
             foreach (Journal journal in journals)
             {
                 Console.WriteLine($"{journal.Title}:  {journal.CreateDateTime}");
