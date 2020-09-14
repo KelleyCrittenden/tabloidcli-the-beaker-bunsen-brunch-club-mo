@@ -9,14 +9,10 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private readonly IUserInterfaceManager _parentUI;
         private TagRepository _tagRepository;
-        private string _connectionString;
-
-
         public TagManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
             _tagRepository = new TagRepository(connectionString);
-            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -90,7 +86,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("-------------------------");
             foreach (Tag tag in tags)
             {
-                Console.WriteLine($"tag.Name");
+                Console.WriteLine($"{tag.Name}");
                 Console.WriteLine("-------------");
             }
         }
