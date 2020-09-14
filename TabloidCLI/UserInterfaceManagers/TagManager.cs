@@ -69,7 +69,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.WriteLine("New Tag");
             Tag newTag = new Tag();
-            int nameMaxChar = 5;
+            int nameMaxChar = 55;
 
         TagName:
             Console.Write("Tag name: ");
