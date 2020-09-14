@@ -94,7 +94,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("-------------------------");
             foreach (Tag tag in tags)
             {
-                Console.WriteLine($"tag.Name");
+                Console.WriteLine($"{tag.Name}");
                 Console.WriteLine("-------------");
             }
         }
@@ -108,9 +108,27 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Tag tagToEdit = Choose("Which tag would you like to edit?");
 
+            if (tagToEdit == null)
+            {
+                return;
+            }
+            tagEdit:
             Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine(tagToEdit);
+            Console.Write("Please enter new tag name (Blank to leave unchanged): ");
+            string tagName = Console.ReadLine();
+            if (tagName.Length > 55 )
+            {
+                Console.WriteLine();
+                Console.WriteLine("Tag name must be 55 characters or less.");
+                Console.WriteLine();
+                goto tagEdit;
+            } else if (!string.IsNullOrEmpty(tagName))
+            {
+                tagToEdit.Name = tagName;
+            }
+
+
+            _tagRepository.Update(tagToEdit);
         }
 
         private void Remove()
