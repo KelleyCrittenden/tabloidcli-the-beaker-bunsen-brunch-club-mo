@@ -151,7 +151,7 @@ namespace TabloidCLI.UserInterfaceManagers
             if (tagToDelete != null)
             {
                 _tagRepository.Delete(tagToDelete.Id);
-                Console.WriteLine("Post has been removed.");
+                Console.WriteLine("Tag has been removed.");
 
             }
             Console.WriteLine();
