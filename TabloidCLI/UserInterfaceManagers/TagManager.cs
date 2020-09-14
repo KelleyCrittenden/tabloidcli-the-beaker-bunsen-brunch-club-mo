@@ -93,7 +93,25 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Add()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("New Tag");
+            Tag newTag = new Tag();
+            int nameMaxChar = 55;
+
+        TagName:
+            Console.Write("Tag name: ");
+            newTag.Name = Console.ReadLine();
+            if (newTag.Name == "")
+            {
+                Console.WriteLine("Please enter a tag name");
+                goto TagName;
+            }
+            else if (newTag.Name.Length > nameMaxChar)
+            {
+                Console.WriteLine($"Name is too long, please limit to {nameMaxChar} characters");
+                goto TagName;
+            }
+
+            _tagRepository.Insert(newTag);
         }
 
         private void Edit()
