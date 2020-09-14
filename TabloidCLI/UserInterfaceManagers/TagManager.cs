@@ -9,14 +9,10 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private readonly IUserInterfaceManager _parentUI;
         private TagRepository _tagRepository;
-        private string _connectionString;
-
-
         public TagManager(IUserInterfaceManager parentUI, string connectionString)
         {
             _parentUI = parentUI;
             _tagRepository = new TagRepository(connectionString);
-            _connectionString = connectionString;
         }
 
         public IUserInterfaceManager Execute()
@@ -51,7 +47,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
             }
         }
-
+      
         private Tag Choose(string prompt = null)
         {
         ChooseTag:
@@ -151,7 +147,14 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-            throw new NotImplementedException();
+            Tag tagToDelete = Choose("Which tag would you like to delete?");
+            if (tagToDelete != null)
+            {
+                _tagRepository.Delete(tagToDelete.Id);
+                Console.WriteLine("Post has been removed.");
+
+            }
+            Console.WriteLine();
         }
     }
 }
