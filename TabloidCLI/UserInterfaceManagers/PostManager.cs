@@ -100,7 +100,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 int choice = int.Parse(input);
                 return posts[choice - 1];
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Invalid Selection");
                 return null;
